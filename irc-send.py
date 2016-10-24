@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import irc.client
 import irc.logging
 
@@ -27,7 +29,7 @@ def on_connect(connection, event):
 			
 			# Send the message
 			for message in messages:
-				connection.privmsg(receiver, message)
+				connection.privmsg(receiver, message.decode('utf8'))
 	
 	# Quit of the server
 	connection.quit("Cachet Notify")

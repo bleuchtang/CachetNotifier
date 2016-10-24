@@ -3,8 +3,11 @@
 
 [cachet]
 
-# Url of Cachet RSS
-url: http://status.example.com/rss
+# Url of Cachet API
+url: http://status.example.com/api/v1
+
+# API token
+token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 # Cache file to write notified items
 cache: tmp/notified.cache

@@ -1,14 +1,18 @@
 #!/usr/bin/python
 import hashlib
-import feedparser
 import logging
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import os
 import ConfigParser
 import time
 import html2text
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+import cachetclient.cachet as cachet
+import json
+ 
 # Reading Config Files
 global config
 config = ConfigParser.ConfigParser()
@@ -163,16 +167,19 @@ try:
 			call(['./irc-send.py', config.get('irc', 'server'), config.get('irc', 'port'), config.get('irc', 'nick'), config.get('irc', 'receivers'), '%s,,%s'%(irctitle, ircdesc), config.get('irc', 'ssl')])
 			
 
-	# Function to check new feed itens
+      
+#	# Function to check new API itens
 	@sched.scheduled_job('interval', seconds=config.getint('cachet','interval'), timezone=0)
 	def check():
-		feed = feedparser.parse(config.get('cachet', 'url'))
-		for item in feed.entries:
-			itemhash = hashlib.md5(item.title + item.updated_at).hexdigest()
+	        incidents = cachet.Incidents(endpoint=config.get('cachet', 'url'), api_token=config.get('cachet', 'token'))
+	        entries = json.loads(incidents.get())
+		for item in entries["data"]:
+                        print item
+			itemhash = hashlib.md5(item["name"] + item["updated_at"]).hexdigest()
 			if not itemhash in open(config.get('cachet', 'cache')).read():
 				with open(config.get('cachet', 'cache'), "ab") as myfile:
 					myfile.write(itemhash + "\n")
-				newitem(item.title, itemhash, item.message, item.status, item.updated_at)
+				newitem(item["name"], itemhash, item["message"], item["human_status"], item["updated_at"])
 				
 	sched.start()
 
