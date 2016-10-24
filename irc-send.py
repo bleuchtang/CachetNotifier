@@ -4,10 +4,9 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import irc.client
-import irc.logging
 
 # If SSL is enabled, import the module
-if sys.argv[6] == "true":
+if sys.argv[7] == "true":
 	import ssl
 
 # Commands to run when the bot is connected to the server
@@ -42,13 +41,13 @@ def on_disconnect(connection, event):
 global target
 
 # Split all receivers by comma
-target = sys.argv[4].split(',')
+target = sys.argv[5].split(',')
 
 # Defining messages separated by comma
-messages = sys.argv[5].split(',,')
+messages = sys.argv[6].split(',,')
 
 # If SSL is enabled
-if sys.argv[6] == "true":
+if sys.argv[7] == "true":
 	
 	# Set SSL Factory with SSL
 	ssl_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
@@ -57,7 +56,7 @@ if sys.argv[6] == "true":
 	reactor = irc.client.Reactor()
 	
 	# Connect with SSL
-	c = reactor.server().connect(sys.argv[1], int(sys.argv[2]), sys.argv[3], connect_factory=ssl_factory)
+	c = reactor.server().connect(sys.argv[1], int(sys.argv[2]), sys.argv[3], password=sys.argv[4], connect_factory=ssl_factory)
 	
 # Else, SSL is disabled
 else:

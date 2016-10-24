@@ -164,8 +164,7 @@ try:
 			ircdesc="%s - %s"%(content, updated)
 			
 			# Call external IRC script to send ir message
-			call(['./irc-send.py', config.get('irc', 'server'), config.get('irc', 'port'), config.get('irc', 'nick'), config.get('irc', 'receivers'), '%s,,%s'%(irctitle, ircdesc), config.get('irc', 'ssl')])
-			
+			call(['./irc-send.py', config.get('irc', 'server'), config.get('irc', 'port'), config.get('irc', 'nick'), config.get('irc', 'password') , config.get('irc', 'receivers'), '%s,,%s'%(irctitle, ircdesc), config.get('irc', 'ssl')])
 
       
 #	# Function to check new API itens

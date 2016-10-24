@@ -104,3 +104,6 @@ receivers: nick1,nick2,#channel1,#channel2
 
 # Enable or disable SSL
 ssl: true
+
+# IRC password
+password: password666
